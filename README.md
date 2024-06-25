@@ -1,4 +1,4 @@
-# CineNow APP
+# CineMovies APP
 CineNow é um aplicativo Android que permite aos usuários explorar filmes populares em tempo real, obtendo informações diretamente da API do The Movie Database (TMDB). Com uma interface amigável, os usuários podem visualizar detalhes de filmes, incluindo sinopse, data de lançamento, classificação, e muito mais.
 
 Funcionalidades
