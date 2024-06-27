@@ -1,5 +1,6 @@
 package com.devspacecinenow.data.remote
 
+import com.devspacecinenow.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
@@ -12,11 +13,11 @@ object RetrofitClient {
     private val httpClient: OkHttpClient
         get(){
             val clientBuilder = OkHttpClient.Builder()
-            val token = ""
+            val token = BuildConfig.API_KEY
             clientBuilder.addInterceptor{ chain ->
                 val original: Request = chain.request()
                 val requestBuilder: Request.Builder = original.newBuilder()
-                    .header("accept", "application/json $token")
+                    .header("Authorization", "Bearer $token")
                 val request: Request = requestBuilder.build()
                 chain.proceed(request)
             }
