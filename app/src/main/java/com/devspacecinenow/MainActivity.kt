@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.devspacecinenow.ui.CineNowApp
-import com.devspacecinenow.ui.MovieListScreen
 import com.devspacecinenow.ui.theme.CineNowTheme
 
 class MainActivity : ComponentActivity() {
