@@ -8,16 +8,13 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun CineNowApp() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "movieList"){
-
-        composable(route = "movieList"){
-            MovieListScreen()
+    NavHost(navController = navController, startDestination = "movieList") {
+        composable(route = "movieList") {
+            MovieListScreen(navController)
         }
-        composable(route = "movieDetail"){
+        composable(route = "movieDetail") {
             MovieDetailScreen()
         }
-
-
     }
 }
 
