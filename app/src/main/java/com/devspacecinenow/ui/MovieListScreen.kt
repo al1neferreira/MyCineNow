@@ -1,4 +1,4 @@
-package com.devspacecinenow
+package com.devspacecinenow.ui
 
 import android.util.Log
 import androidx.compose.foundation.clickable
