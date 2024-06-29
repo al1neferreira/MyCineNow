@@ -50,6 +50,14 @@ class MainActivity : ComponentActivity() {
                 var nowPLayingMovies: List<MovieDto> by remember {
                     mutableStateOf<List<MovieDto>>(emptyList())
                 }
+                var upcomingMovies: List<MovieDto> by remember {
+                    mutableStateOf<List<MovieDto>>(emptyList())
+                }
+
+                var topRatedMovies: List<MovieDto> by remember {
+                    mutableStateOf<List<MovieDto>>(emptyList())
+                }
+
                 val apiService =
                     RetrofitClient
                         .retrofitInstance
@@ -77,6 +85,54 @@ class MainActivity : ComponentActivity() {
                         Log.d("MainActivity", "Network Error :: ${t.message}")
                     }
                 })
+                val callUpcomingMovies = apiService.getUpcomingMovies()
+
+                callUpcomingMovies.enqueue(object : Callback<MovieResponse> {
+                    override fun onResponse(
+                        call: Call<MovieResponse>,
+                        response: Response<MovieResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val movies = response.body()?.results
+                            if (movies != null) {
+                                upcomingMovies = movies
+                            }
+
+                        } else {
+                            Log.d("MainActivity", "Request Error :: ${response.errorBody()}")
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                        Log.d("MainActivity", "Network Error :: ${t.message}")
+                    }
+
+                })
+
+                val callTopRatedMovies = apiService.geTopRatedMovies()
+
+                callTopRatedMovies.enqueue(object : Callback<MovieResponse> {
+                    override fun onResponse(
+                        call: Call<MovieResponse>,
+                        response: Response<MovieResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val movies = response.body()?.results
+                            if (movies != null) {
+                                topRatedMovies = movies
+                            }
+
+                        } else {
+                            Log.d("MainActivity", "Request Error :: ${response.errorBody()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                        Log.d("MainActivity", "Network Error :: ${t.message}")
+                    }
+
+                })
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -92,7 +148,8 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(
                                     top = 5.dp,
-                                    bottom = 5.dp),
+                                    bottom = 5.dp
+                                ),
                             fontSize = 40.sp,
                             fontWeight = FontWeight.SemiBold,
                             text = " My CineNow"
@@ -101,6 +158,20 @@ class MainActivity : ComponentActivity() {
                         MovieSession(
                             label = "Now Playing",
                             movieList = nowPLayingMovies,
+                            onClick = { movieClicked ->
+                            }
+                        )
+
+                        MovieSession(
+                            label = "Upcoming",
+                            movieList = upcomingMovies,
+                            onClick = { movieClicked ->
+                            }
+                        )
+
+                        MovieSession(
+                            label = "Top Rated",
+                            movieList = topRatedMovies,
                             onClick = { movieClicked ->
                             }
                         )
@@ -163,9 +234,9 @@ fun MovieItem(
         modifier = Modifier
             .width(IntrinsicSize.Min)
             .clickable {
-            onClick.invoke(movieDto)
+                onClick.invoke(movieDto)
 
-        }
+            }
     ) {
         AsyncImage(
             modifier = Modifier
@@ -177,17 +248,19 @@ fun MovieItem(
             contentDescription = "${movieDto.title} Poster image"
         )
         Spacer(modifier = Modifier.size(4.dp))
-        
+
         Text(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.SemiBold,
-            text = movieDto.title)
+            text = movieDto.title
+        )
         Text(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            text = movieDto.overview)
-        
+            text = movieDto.overview
+        )
+
     }
 }
 
