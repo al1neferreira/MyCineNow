@@ -20,7 +20,7 @@ fun CineNowApp() {
             })
         ) { backStackEntry ->
             val movieId = requireNotNull(backStackEntry.arguments?.getString("itemId"))
-            MovieDetailScreen(movieId)
+            MovieDetailScreen(movieId, navController)
         }
     }
 }
