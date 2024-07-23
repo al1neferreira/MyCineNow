@@ -28,10 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.devspacecinenow.common.RetrofitClient
 import com.devspacecinenow.data.model.MovieDto
 import com.devspacecinenow.data.model.MovieResponse
-import com.devspacecinenow.data.remote.ApiService
-import com.devspacecinenow.data.remote.RetrofitClient
+import com.devspacecinenow.data.remote.ListService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,8 +44,8 @@ fun MovieListScreen(navController: NavHostController) {
     var upcomingMovies by remember { mutableStateOf<List<MovieDto>>(emptyList()) }
     var popularMovies by remember { mutableStateOf<List<MovieDto>>(emptyList()) }
 
-    val apiService = RetrofitClient.retrofitInstance.create(ApiService::class.java)
-    val callNowPlaying = apiService.getNowPlaying()
+    val listService = RetrofitClient.retrofitInstance.create(ListService::class.java)
+    val callNowPlaying = listService.getNowPlaying()
 
     callNowPlaying.enqueue(object : Callback<MovieResponse> {
         override fun onResponse(
@@ -68,7 +68,7 @@ fun MovieListScreen(navController: NavHostController) {
         }
     })
 
-    val callTopRatedMovies = apiService.geTopRatedMovies()
+    val callTopRatedMovies = listService.geTopRatedMovies()
     callTopRatedMovies.enqueue(object : Callback<MovieResponse> {
         override fun onResponse(
             call: Call<MovieResponse>,
@@ -90,7 +90,7 @@ fun MovieListScreen(navController: NavHostController) {
         }
     })
 
-    val callUpcomingMovies = apiService.getUpcomingMovies()
+    val callUpcomingMovies = listService.getUpcomingMovies()
     callUpcomingMovies.enqueue(object : Callback<MovieResponse> {
         override fun onResponse(
             call: Call<MovieResponse>,
@@ -112,7 +112,7 @@ fun MovieListScreen(navController: NavHostController) {
         }
     })
 
-    val callPopularMovies = apiService.getPopularMovies()
+    val callPopularMovies = listService.getPopularMovies()
     callPopularMovies.enqueue(object : Callback<MovieResponse> {
         override fun onResponse(
             call: Call<MovieResponse>,

@@ -1,4 +1,4 @@
-package com.devspacecinenow.ui
+package com.devspacecinenow.detail
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.devspacecinenow.common.RetrofitClient
 import com.devspacecinenow.data.model.MovieDto
 import com.devspacecinenow.data.remote.ApiService
-import com.devspacecinenow.data.remote.RetrofitClient
 import com.devspacecinenow.ui.theme.CineNowTheme
 import retrofit2.Call
 import retrofit2.Callback
