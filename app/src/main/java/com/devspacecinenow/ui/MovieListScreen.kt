@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,14 +33,18 @@ import com.devspacecinenow.common.RetrofitClient
 import com.devspacecinenow.data.model.MovieDto
 import com.devspacecinenow.data.model.MovieResponse
 import com.devspacecinenow.data.remote.ListService
+import com.devspacecinenow.data.viewModel.MovieListViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun MovieListScreen(navController: NavHostController) {
+fun MovieListScreen(
+    navController: NavHostController,
+    viewModel: MovieListViewModel
+    ) {
 
-    var nowPlayingMovies by remember { mutableStateOf<List<MovieDto>>(emptyList()) }
+    val nowPlayingMovies by viewModel.uiNowPlaying.collectAsState()
     var topRatedMovies by remember { mutableStateOf<List<MovieDto>>(emptyList()) }
     var upcomingMovies by remember { mutableStateOf<List<MovieDto>>(emptyList()) }
     var popularMovies by remember { mutableStateOf<List<MovieDto>>(emptyList()) }
@@ -47,26 +52,7 @@ fun MovieListScreen(navController: NavHostController) {
     val listService = RetrofitClient.retrofitInstance.create(ListService::class.java)
     val callNowPlaying = listService.getNowPlaying()
 
-    callNowPlaying.enqueue(object : Callback<MovieResponse> {
-        override fun onResponse(
-            call: Call<MovieResponse>,
-            response: Response<MovieResponse>
-        ) {
-            if (response.isSuccessful) {
-                val movies = response.body()?.results
-                if (movies != null) {
-                    nowPlayingMovies = movies
-                    Log.d("MainActivity", "${response.body()}")
-                }
-            } else {
-                Log.d("MainActivity", "Request Error :: ${response.errorBody()}")
-            }
-        }
 
-        override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-            Log.d("MainActivity", "Network Error :: ${t.message}")
-        }
-    })
 
     val callTopRatedMovies = listService.geTopRatedMovies()
     callTopRatedMovies.enqueue(object : Callback<MovieResponse> {
